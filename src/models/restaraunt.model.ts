@@ -13,11 +13,10 @@ const restarauntSchema = new mongoose.Schema({
   },
   images: {
     type: [String],
-    
   },
   owner: {
-    type : mongoose.Schema.Types.ObjectId,
-    ref : "User",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   address: {
     type: String,

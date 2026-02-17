@@ -10,7 +10,5 @@ export const connectDb = async () => {
   }
 };
 export const dbStatus = () => {
-  return mongoose.connection.readyState === 1
-    ? "connected"
-    : "disconnected";
+  return mongoose.connection.readyState === 1 ? "connected" : "disconnected";
 };

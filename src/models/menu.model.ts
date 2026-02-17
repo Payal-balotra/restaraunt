@@ -15,12 +15,12 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   restaurant: {
-    type : mongoose.Types.ObjectId,
-    ref : "Restaraunt"
+    type: mongoose.Types.ObjectId,
+    ref: "Restaraunt",
   },
-  isAvailable:{
-    type:Boolean
-  }
+  isAvailable: {
+    type: Boolean,
+  },
 });
 
 export const User = mongoose.model("User", userSchema);

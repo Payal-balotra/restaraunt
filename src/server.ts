@@ -5,7 +5,10 @@ import helmet from "helmet";
 import cors from "cors";
 import { dbStatus } from "./database/db";
 import { config } from "./config/config";
-import {errorHandler, notFoundHandler} from "./middlewares/globalError.middleware";
+import {
+  errorHandler,
+  notFoundHandler,
+} from "./middlewares/globalError.middleware";
 const app = express();
 
 app.use(helmet());
@@ -31,7 +34,7 @@ app.get("/health", (req, res) => {
 
 app.use("/api", routes);
 
-app.use(notFoundHandler)
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen(config.port, () => {

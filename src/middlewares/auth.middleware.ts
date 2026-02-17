@@ -1,22 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyJwtToken } from "../lib/jwt";
 import { errorResponse } from "../utils/Response";
+import { findUserById } from "../services/user.services";
 
-
-export function verifyToken(req: Request, res: Response, next: NextFunction) {
+export const getUser = async (req: any, res: Response, next: NextFunction) => {
   const token = req.header("Authorization");
-  
-  if (!token) return  errorResponse(res,401,"Access denied")
+  if (!token) return errorResponse(res, 401, "Access denied");
   try {
-   const decoded = verifyJwtToken(token)
-    console.log(decoded , "this is decoded");
-  //  const user =  findUser(decoded.user_id)
-    req.body.user = decoded.user;
+    const decoded = verifyJwtToken(token);
+    const user = await findUserById(decoded.userId);
+    req.user = user;
     next();
   } catch (error) {
-     return  errorResponse(res,401,"Invalid token")
+    console.log(error);
+    return errorResponse(res, 401, "Invalid token");
   }
-}
-
-
-
+};
