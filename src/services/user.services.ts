@@ -1,4 +1,3 @@
-import { NextFunction } from "express";
 import { User } from "../models/user.model";
 
 export const findUserByEmail = async (email: string) => {
@@ -19,7 +18,7 @@ export const createUser = async (
   email: string,
   password: string,
   role: string,
-  phone: any,
+  phone: number,
 ) => {
   const user = User.create({ name, email, password, role, phone });
   console.log("user created ");

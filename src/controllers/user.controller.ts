@@ -46,7 +46,6 @@ export const login = catchAsync(async (req: Request, res: Response) => {
 export const updateUser = catchAsync(async (req: any, res: Response) => {
   const data = req.body;
   const userId = req.params.id;
-
   const updatedUser = await updateUserById(userId, data);
   return response(res, 200, "User Updated Successfully", updatedUser);
 })

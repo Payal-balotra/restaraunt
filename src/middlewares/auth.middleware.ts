@@ -3,7 +3,7 @@ import { verifyJwtToken } from "../lib/jwt";
 import { errorResponse } from "../utils/Response";
 import { findUserById } from "../services/user.services";
 
-export const getUser = async (req: any, res: Response, next: NextFunction) => {
+export const verifyToken = async (req: any, res: Response, next: NextFunction) => {
   const token = req.header("Authorization");
   if (!token) return errorResponse(res, 401, "Access denied");
   try {

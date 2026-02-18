@@ -20,7 +20,6 @@ export const generateRefreshToken = (user: any) => {
 
 export const verifyJwtToken = (token: string) => {
   const decoded = jwt.verify(token, config.secretKey) as JwtPayload;
-
   return decoded;
 };
 export const verifyRefreshToken = (token: string) => {

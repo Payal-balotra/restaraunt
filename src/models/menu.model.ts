@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String,
+
   },
   restaurant: {
     type: mongoose.Types.ObjectId,

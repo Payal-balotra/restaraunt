@@ -4,6 +4,7 @@ export enum Role {
   ADMIN = "admin",
   CUSTOMER = "customer",
   RESTARAUNT_OWNER = "restaraunt_owner",
+  SUPER_ADMIN = "SUPER_ADMIN"
 }
 
 export type User = {
@@ -32,6 +33,7 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(Role),
       default: Role.CUSTOMER,
       required: true,
+       immutable: true
     },
     phone: {
       type: Number,

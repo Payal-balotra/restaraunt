@@ -6,18 +6,19 @@ import {
   updateUser,
 } from "../../controllers/user.controller";
 import { validationMiddleware } from "../../validations/user.validation";
-import { getUser } from "../../middlewares/auth.middleware";
-import { checkSuperAdminRole } from "../../middlewares/roleCheck.middleware";
+import {  verifyToken } from "../../middlewares/auth.middleware";
+import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import { userIdCheck } from "../../middlewares/userCheckForUpdate.middleware";
+import { Role } from "../../models/user.model";
 const router = express.Router();
 
 router.post("/register", validationMiddleware, register);
 router.post("/login", login);
-router.put("/update-user/:id", getUser, userIdCheck, updateUser);
+router.put("/update-user/:id", verifyToken, userIdCheck, updateUser);
 router.post(
   "/create-admin",
-  getUser,
-  checkSuperAdminRole,
+  verifyToken,
+  allowRoles(Role.SUPER_ADMIN),
   validationMiddleware,
   register,
 );
