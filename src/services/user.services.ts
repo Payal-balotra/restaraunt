@@ -25,7 +25,7 @@ export const createUser = async (
   return user;
 };
 
-export const updateUserById = async (userId: any, data: any) => {
+export const updateUserById = async (userId: string, data: any) => {
   const updatedUser = User.findByIdAndUpdate(userId, data, { returnDocument: 'after' });
   return updatedUser;
 };

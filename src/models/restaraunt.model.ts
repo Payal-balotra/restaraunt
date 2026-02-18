@@ -10,6 +10,7 @@ const restarauntSchema = new mongoose.Schema({
   },
   cuisine: {
     type: String,
+    required : true
   },
   images: {
     type: [String],
@@ -17,12 +18,15 @@ const restarauntSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    immuatble : true,
+    required : true
   },
   address: {
     type: String,
   },
   isActive: {
     type: Boolean,
+    default : false
   },
 });
 
