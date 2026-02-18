@@ -22,7 +22,7 @@ router.post(
   "/create",
   verifyToken,
   allowRoles(Role.RESTARAUNT_OWNER),
-  upload.array("images", 10), // req.files come 
+  upload.array("images", 10), 
   cloudinaryUpload,
   createRestaraunt,
 );
