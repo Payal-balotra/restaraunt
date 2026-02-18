@@ -26,3 +26,17 @@ export const uploadImages = async (files: Express.Multer.File[]) => {
     throw err;
   }
 };
+
+export const uploadImage = async (file: Express.Multer.File) => {
+  try {
+    const result = await cloudinary.uploader.upload(file.path, {
+      folder: "menuItems",
+      resource_type: "auto",
+    });
+    await fs.unlink(file.path);
+    return result;
+  } catch (err) {
+    console.error("Cloudinary Upload Error:", err);
+    throw err;
+  }
+};

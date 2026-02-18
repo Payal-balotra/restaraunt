@@ -8,7 +8,7 @@ import {
   updateRestaraunt,
 } from "../../controllers/restaraunt.controller";
 import { verifyToken } from "../../middlewares/auth.middleware";
-import { cloudinaryUpload } from "../../middlewares/cloudinary.middleware";
+import { cloudinaryUploads } from "../../middlewares/cloudinary.middleware";
 import { Role } from "../../models/user.model";
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.post(
   verifyToken,
   allowRoles(Role.RESTARAUNT_OWNER, Role.SUPER_ADMIN),
   upload.array("images", 10),
-  cloudinaryUpload,
+  cloudinaryUploads,
   createRestaraunt,
 );
 
@@ -37,7 +37,7 @@ router.put(
    verifyToken,
   allowRoles(Role.RESTARAUNT_OWNER, Role.SUPER_ADMIN),
   upload.array("images", 10),
-  cloudinaryUpload,
+  cloudinaryUploads,
   updateRestaraunt,
 );
 router.delete(

@@ -1,4 +1,15 @@
 import { User } from "../models/user.model";
+export const createUser = async (
+  name: string,
+  email: string,
+  password: string,
+  role: string,
+  phone: number,
+) => {
+  const user = User.create({ name, email, password, role, phone });
+  console.log("user created ");
+  return user;
+};
 
 export const findUserByEmail = async (email: string) => {
   const existingUser = User.findOne({ email });
@@ -13,17 +24,6 @@ export const findUserByName = async (name: string) => {
   return existingUser;
 };
 
-export const createUser = async (
-  name: string,
-  email: string,
-  password: string,
-  role: string,
-  phone: number,
-) => {
-  const user = User.create({ name, email, password, role, phone });
-  console.log("user created ");
-  return user;
-};
 
 export const updateUserById = async (userId: string, data: any) => {
   const updatedUser = User.findByIdAndUpdate(userId, data, { returnDocument: 'after' });

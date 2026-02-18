@@ -6,22 +6,25 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: String,
+    type: Number,
+    required: true,
   },
   category: {
     type: String,
+    required: true,
   },
   image: {
     type: String,
-
   },
   restaurant: {
     type: mongoose.Types.ObjectId,
     ref: "Restaraunt",
+    required: true,
   },
   isAvailable: {
     type: Boolean,
+    required: true,
   },
 });
 
-export const User = mongoose.model("User", userSchema);
+export const Menu = mongoose.model("Menu", userSchema);
