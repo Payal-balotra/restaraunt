@@ -17,7 +17,8 @@ export const createMenuItem = async (
     isAvailable,
   });
   return item;
-};
+}
+
 
 export const findMenuItemById = (id: any) => {
   const existingItem = Menu.findById(id);
