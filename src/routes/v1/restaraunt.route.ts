@@ -5,11 +5,13 @@ import {
   approval,
   createRestaraunt,
   deleteRestaraunt,
+  getRestaurants,
   updateRestaraunt,
 } from "../../controllers/restaraunt.controller";
 import { verifyToken } from "../../middlewares/auth.middleware";
 import { cloudinaryUploads } from "../../middlewares/cloudinary.middleware";
 import { Role } from "../../models/user.model";
+import { validateRestaurant } from "../../validations/restaurant.validation";
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -22,6 +24,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+router.get("/get",getRestaurants);
+
 
 router.post(
   "/create",
@@ -29,6 +33,7 @@ router.post(
   allowRoles(Role.RESTARAUNT_OWNER, Role.SUPER_ADMIN),
   upload.array("images", 10),
   cloudinaryUploads,
+  validateRestaurant,
   createRestaraunt,
 );
 

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const restarauntSchema = new mongoose.Schema({
+const restaurantSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -10,7 +10,7 @@ const restarauntSchema = new mongoose.Schema({
   },
   cuisine: {
     type: String,
-    required : true
+    required: true,
   },
   images: {
     type: [String],
@@ -18,16 +18,18 @@ const restarauntSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    immuatble : true,
-    required : true
+    immuatble: true,
+    required: true,
   },
   address: {
     type: String,
   },
   isActive: {
     type: Boolean,
-    default : false
+    default: false,
   },
 });
 
-export const Restaraunt = mongoose.model("Restaraunt", restarauntSchema);
+restaurantSchema.index({ name: "text", description: "text", cuisine: "text" });
+
+export const Restaraunt = mongoose.model("Restaraunt", restaurantSchema);

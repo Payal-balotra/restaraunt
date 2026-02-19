@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import {
-  approvalById,
   create,
   deleteRestarauntById,
   findRestarauntById,
@@ -9,6 +8,7 @@ import {
 } from "../services/restaraunt.services";
 import { errorResponse, response } from "../utils/Response";
 import catchAsync from "../utils/catchAsync";
+import { Restaraunt } from "../models/restaraunt.model";
 
 export const createRestaraunt = catchAsync(
   async (req: Request, res: Response) => {
@@ -39,7 +39,6 @@ export const updateRestaraunt = catchAsync(
     if (!restaraunt) {
       return errorResponse(res, 404, "No restaraunt found");
     }
-    // console.log(data)
     const updatedRestaraunt = await updateRestarauntById(restarauntId, data);
     return response(
       res,
@@ -57,8 +56,8 @@ export const deleteRestaraunt = catchAsync(
     if (!restaraunt) {
       return errorResponse(res, 404, "No restaraunt found");
     }
-    await deleteRestarauntById(restarauntId);
-    return response(res, 204, "Restaraunt deleted Successfully", []);
+   const deletedRes=  await deleteRestarauntById(restarauntId);
+    return response(res, 20, "Restaraunt deleted Successfully",deletedRes);
   },
 );
 
@@ -72,9 +71,34 @@ export const approval = catchAsync(async (req: Request, res: Response) => {
     );
   }
   const restaruant = await findRestarauntById(restarauntId);
-  if (!restaruant) {
-    return errorResponse(res,404,"No restaraunt found");
+  if (restaruant) {
+    restaruant.isActive = true;
+    await restaruant.save();
   }
-  approvalById(restarauntId)
   return response(res, 200, "approval", []);
 });
+
+export const getRestaurants = async (req: Request, res: Response) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const offset = (page - 1) * limit;
+  const { search, cuisine } = req.query;
+  const filter: Record<string, any> = {};
+  if (typeof search === "string" && search.trim() !== "") {
+    const searchRegex = new RegExp(search, "i");
+    filter.$or = [
+      { name: searchRegex },
+      { description: searchRegex },
+      { cuisine: searchRegex },
+    ];
+  }
+
+  if (typeof cuisine === "string" && cuisine.trim() !== "") {
+    filter.cuisine = { $regex: cuisine, $options: "i" };
+  }
+
+  const [data] = await Promise.all([
+    Restaraunt.find(filter).skip(offset).limit(limit),
+  ]);
+  return response(res, 200, "Restaurants", data);
+};

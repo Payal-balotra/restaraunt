@@ -40,7 +40,3 @@ export const deleteRestarauntById = async (id: any) => {
   const deletedRes = Restaraunt.findByIdAndDelete(id);
   return deletedRes;
 };
-
-export const approvalById = (restaurantId: any) => {
-  Restaraunt.findByIdAndUpdate(restaurantId, { isActive: true }, { new: true });
-};

@@ -2,6 +2,7 @@ import z from "zod";
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "zod";
 import { Role } from "../models/user.model";
+import { response } from "../utils/Response";
 
 export const roles = z.enum(Object.values(Role), {
   message: "Please enter valid role .",
@@ -41,7 +42,6 @@ export const validationMiddleware = (
     userSchema.parse({ ...req.body });
     next();
   } catch (err) {
-    // console.log(err);
     if (err instanceof ZodError) {
       const errors: Record<string, string> = {};
 
@@ -50,10 +50,7 @@ export const validationMiddleware = (
         errors[path] = issue.message;
       });
 
-      return res.status(400).json({
-        message: "Validation failed",
-        errors,
-      });
+      return response(res, 400, "Validation failed", errors);
     }
   }
 };
