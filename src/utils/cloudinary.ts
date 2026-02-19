@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
-import { config } from "../config/config";
 import fs from "fs/promises";
+import { config } from "../config/config";
 
 cloudinary.config({
   cloud_name: config.cloud_name,
@@ -8,35 +8,23 @@ cloudinary.config({
   api_secret: config.api_secret,
 });
 
-export const uploadImages = async (files: Express.Multer.File[]) => {
-  try {
-    const uploadPromises = files.map(async (file) => {
+export const uploadToCloudinary = async (
+  files: Express.Multer.File | Express.Multer.File[],
+  folder: string
+) => {
+  const fileArray = Array.isArray(files) ? files : [files];
+
+  const uploadResults = await Promise.all(
+    fileArray.map(async (file) => {
       const result = await cloudinary.uploader.upload(file.path, {
-        folder: "restaurants",
+        folder,
+        resource_type: "auto",
       });
 
       await fs.unlink(file.path);
-
       return result;
-    });
+    })
+  );
 
-    return await Promise.all(uploadPromises);
-  } catch (err) {
-    console.error("Cloudinary Upload Error:", err);
-    throw err;
-  }
-};
-
-export const uploadImage = async (file: Express.Multer.File) => {
-  try {
-    const result = await cloudinary.uploader.upload(file.path, {
-      folder: "menuItems",
-      resource_type: "auto",
-    });
-    await fs.unlink(file.path);
-    return result;
-  } catch (err) {
-    console.error("Cloudinary Upload Error:", err);
-    throw err;
-  }
+  return Array.isArray(files) ? uploadResults : uploadResults[0];
 };
