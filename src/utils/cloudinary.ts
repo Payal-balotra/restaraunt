@@ -8,23 +8,50 @@ cloudinary.config({
   api_secret: config.api_secret,
 });
 
-export const uploadToCloudinary = async (
-  files: Express.Multer.File | Express.Multer.File[],
-  folder: string
+export const uploadImage = async (
+  file: Express.Multer.File,
+  folder: string = "uploads",
 ) => {
-  const fileArray = Array.isArray(files) ? files : [files];
+  try {
+    const result = await cloudinary.uploader.upload(file.path, {
+      folder,
+      resource_type: "auto",
+    });
 
-  const uploadResults = await Promise.all(
-    fileArray.map(async (file) => {
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder,
-        resource_type: "auto",
-      });
+    await fs.unlink(file.path);
 
-      await fs.unlink(file.path);
-      return result;
-    })
-  );
+    return result;
+  } catch (error) {
+    await fs.unlink(file.path).catch(() => {});
+    console.error("Cloudinary Upload Error:", error);
+    throw error;
+  }
+};
 
-  return Array.isArray(files) ? uploadResults : uploadResults[0];
+export const uploadImages = async (
+  files: Express.Multer.File[],
+  folder: string = "uploads",
+) => {
+  try {
+    const uploadResults = await Promise.all(
+      files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder,
+          resource_type: "auto",
+        });
+
+        await fs.unlink(file.path);
+        return result;
+      }),
+    );
+
+    return uploadResults;
+  } catch (error) {
+    await Promise.all(
+      files.map((file) => fs.unlink(file.path).catch(() => {})),
+    );
+
+    console.error("Cloudinary Multiple Upload Error:", error);
+    throw error;
+  }
 };
