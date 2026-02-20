@@ -9,6 +9,7 @@ export interface ICartItem {
 
 export interface ICart {
   user: Types.ObjectId;
+  restaurant : Types.ObjectId;
   items: ICartItem[];
 }
 
@@ -31,6 +32,11 @@ const cartSchema = new Schema<ICart>({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
+  },
+  restaurant : {
+    type: Schema.Types.ObjectId,
+    ref: "Restaurant",
     required: true,
   },
   items: {

@@ -26,9 +26,9 @@ export const createMenuItems = catchAsync(
 export const updateMenuItems = catchAsync(
   async (req: Request, res: Response) => {
     const data = req.body;
-    const menuItemId = req.params.id;
-    const restaurant = await findMenuItemById(menuItemId);
-    if (!restaurant) {
+    const menuItemId = req.params.id as string;
+    const menuItem = await findMenuItemById(menuItemId);
+    if (!menuItem) {
       return errorResponse(res, 404, "No Menu Item found");
     }
     const updatedMenuItem = await updateMenuItemById(menuItemId, data);
@@ -43,7 +43,7 @@ export const updateMenuItems = catchAsync(
 
 export const deleteMenuItem = catchAsync(
   async (req: Request, res: Response) => {
-    const menuItemId = req.params.id;
+    const menuItemId = req.params.id as string;
     const menuItem = await findMenuItemById(menuItemId);
     if (!menuItem) {
       return errorResponse(res, 404, "No Menu Item found");
@@ -54,7 +54,7 @@ export const deleteMenuItem = catchAsync(
 );
 
 export const avaliableServiceToogle = catchAsync(async (req: Request, res: Response) => {
-  const ItemId = req.params.id;
+  const ItemId = req.params.id as string;
   if (!ItemId) {
     return errorResponse(
       res,

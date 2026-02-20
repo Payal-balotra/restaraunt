@@ -19,11 +19,13 @@ export const createMenuItem = async (
   return item;
 }
 
-
-export const findMenuItemById = (id: any) => {
-  const existingItem = Menu.findById(id);
-  return existingItem;
+export const findMenuItemById = async (id: string) => {
+  return await Menu.findById(id);
 };
+export const findMenuItemInRes = async (itemId: string , restaurantId : string) => {
+  return await Menu.findOne({_id : itemId ,restaurant : restaurantId });
+};
+
 
 export const updateMenuItemById = (id: any, data: any) => {
   const updatedMenuItem = Menu.findByIdAndUpdate(id, data, {
