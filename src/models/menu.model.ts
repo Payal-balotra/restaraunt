@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   },
   restaurant: {
     type: mongoose.Types.ObjectId,
-    ref: "Restaraunt",
+    ref: "Restaurant",
     required: true,
   },
   isAvailable: {

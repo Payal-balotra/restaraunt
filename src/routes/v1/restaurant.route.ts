@@ -3,11 +3,11 @@ import multer from "multer";
 import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import {
   approval,
-  createRestaraunt,
-  deleteRestaraunt,
+  createrestaurant,
+  deleterestaurant,
   getRestaurants,
-  updateRestaraunt,
-} from "../../controllers/restaraunt.controller";
+  updaterestaurant,
+} from "../../controllers/restaurant.controller";
 import { verifyToken } from "../../middlewares/auth.middleware";
 import { cloudinaryUploads } from "../../middlewares/cloudinary.middleware";
 import { Role } from "../../models/user.model";
@@ -24,34 +24,33 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-router.get("/get",getRestaurants);
-
+router.get("/get", getRestaurants);
 
 router.post(
   "/create",
   verifyToken,
-  allowRoles(Role.RESTARAUNT_OWNER, Role.SUPER_ADMIN),
+  allowRoles(Role.RESTAURANT_OWNER, Role.SUPER_ADMIN),
   upload.array("images", 10),
   cloudinaryUploads,
   validateRestaurant,
-  createRestaraunt,
+  createrestaurant,
 );
 
 router.put(
   "/update/:id",
-   verifyToken,
-  allowRoles(Role.RESTARAUNT_OWNER, Role.SUPER_ADMIN),
+  verifyToken,
+  allowRoles(Role.RESTAURANT_OWNER, Role.SUPER_ADMIN),
   upload.array("images", 10),
   cloudinaryUploads,
-  updateRestaraunt,
+  updaterestaurant,
 );
 router.delete(
   "/delete/:id",
   verifyToken,
-  allowRoles(Role.RESTARAUNT_OWNER),
-  deleteRestaraunt,
+  allowRoles(Role.RESTAURANT_OWNER),
+  deleterestaurant,
 );
 
-router.post("/approval/:id",verifyToken,allowRoles(Role.ADMIN),approval)
+router.post("/approval/:id", verifyToken, allowRoles(Role.ADMIN), approval);
 
 export default router;

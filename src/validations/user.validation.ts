@@ -39,7 +39,8 @@ export const validationMiddleware = (
   next: NextFunction,
 ) => {
   try {
-    userSchema.parse({ ...req.body });
+   const parsedData =  userSchema.parse(req.body );
+   req.body = parsedData;
     next();
   } catch (err) {
     if (err instanceof ZodError) {

@@ -3,15 +3,14 @@ import { verifyToken } from "../../middlewares/auth.middleware";
 import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import { Role } from "../../models/user.model";
 import {
+  avaliableServiceToogle,
   createMenuItems,
-  isAvaliable,
-  isNotAvaliable,
   updateMenuItems,
 } from "../../controllers/menu.controller";
 import multer from "multer";
 import { cloudinaryUpload } from "../../middlewares/cloudinary.middleware";
 import { validateMenuItems } from "../../validations/menu.validation";
-import { deleteRestaraunt } from "../../controllers/restaraunt.controller";
+import { deleterestaurant } from "../../controllers/restaurant.controller";
 
 const router = express.Router();
 
@@ -29,17 +28,17 @@ const upload = multer({ storage: storage });
 router.post(
   "/create",
   verifyToken,
-  allowRoles(Role.RESTARAUNT_OWNER),
+  allowRoles(Role.RESTAURANT_OWNER),
   upload.single("image"),
   cloudinaryUpload,
-   validateMenuItems,
+  validateMenuItems,
   createMenuItems,
 );
 
 router.put(
   "/update/:id",
   verifyToken,
-  allowRoles(Role.RESTARAUNT_OWNER),
+  allowRoles(Role.RESTAURANT_OWNER),
   upload.single("image"),
   cloudinaryUpload,
   updateMenuItems,
@@ -48,12 +47,15 @@ router.put(
 router.delete(
   "/delete/:id",
   verifyToken,
-  allowRoles(Role.RESTARAUNT_OWNER),
-  deleteRestaraunt,
+  allowRoles(Role.RESTAURANT_OWNER),
+  deleterestaurant,
 );
 
-router.post("/available/:id",verifyToken,allowRoles(Role.RESTARAUNT_OWNER),isAvaliable)
-router.post("/unavailable/:id",verifyToken,allowRoles(Role.RESTARAUNT_OWNER),isNotAvaliable)
-
+router.post(
+  "/availability/:id",
+  verifyToken,
+  allowRoles(Role.RESTAURANT_OWNER),
+  avaliableServiceToogle,
+);
 
 export default router;

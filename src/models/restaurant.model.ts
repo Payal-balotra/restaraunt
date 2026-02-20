@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+// interface IRestaurant {
+//   name : string,
+//   description : string,
+//   cuisine : string,
+//   images : string[],
+//   owner : Types.ObjectId,
+//   address : string,
+//   isActive : boolean
+  
+// }
 const restaurantSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -27,9 +37,10 @@ const restaurantSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: false,
+     select: false,
   },
 });
 
 restaurantSchema.index({ name: "text", description: "text", cuisine: "text" });
 
-export const Restaraunt = mongoose.model("Restaraunt", restaurantSchema);
+export const Restaurant = mongoose.model("Restaurant", restaurantSchema);

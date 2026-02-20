@@ -3,14 +3,16 @@ import mongoose from "mongoose";
 export enum Role {
   ADMIN = "admin",
   CUSTOMER = "customer",
-  RESTARAUNT_OWNER = "restaraunt_owner",
-  SUPER_ADMIN = "SUPER_ADMIN"
+  RESTAURANT_OWNER = "restaurant_owner",
+  SUPER_ADMIN = "super_admin",
 }
 
 export type User = {
   name: string;
   emial: string;
+  password: string;
   role: Role;
+  phone: number;
 };
 
 const userSchema = new mongoose.Schema(
@@ -33,7 +35,7 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(Role),
       default: Role.CUSTOMER,
       required: true,
-       immutable: true
+      immutable: true,
     },
     phone: {
       type: Number,

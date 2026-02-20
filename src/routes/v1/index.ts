@@ -1,11 +1,13 @@
 import { Router } from "express";
 import authRoutes from "./auth.routes";
-import restarauntsRoutes from "./restaraunt.route";
-import menuItemsRoutes from "./menu.routes"
+import restaurantsRoutes from "./restaurant.route";
+import menuItemsRoutes from "./menu.routes";
+import cartRoutes from "./cart.routes";
 const router = Router();
 
 router.use("/auth", authRoutes);
-router.use("/restaraunts", restarauntsRoutes);
-router.use("/menu-items",menuItemsRoutes);
+router.use("/restaurants", restaurantsRoutes);
+router.use("/menu-items", menuItemsRoutes);
+router.use("/cart", cartRoutes);
 
 export default router;

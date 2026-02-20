@@ -34,7 +34,8 @@ export const validateRestaurant = async (
   next: NextFunction,
 ) => {
   try {
-    restaurantSchema.parse({ ...req.body });
+    const parsedData = restaurantSchema.parse(req.body );;
+    req.body = parsedData;
     next();
   } catch (err) {
     if (err instanceof ZodError) {

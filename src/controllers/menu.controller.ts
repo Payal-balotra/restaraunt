@@ -27,8 +27,8 @@ export const updateMenuItems = catchAsync(
   async (req: Request, res: Response) => {
     const data = req.body;
     const menuItemId = req.params.id;
-    const restaraunt = await findMenuItemById(menuItemId);
-    if (!restaraunt) {
+    const restaurant = await findMenuItemById(menuItemId);
+    if (!restaurant) {
       return errorResponse(res, 404, "No Menu Item found");
     }
     const updatedMenuItem = await updateMenuItemById(menuItemId, data);
@@ -53,39 +53,19 @@ export const deleteMenuItem = catchAsync(
   },
 );
 
-export const isAvaliable = catchAsync(async (req: Request, res: Response) => {
+export const avaliableServiceToogle = catchAsync(async (req: Request, res: Response) => {
   const ItemId = req.params.id;
   if (!ItemId) {
     return errorResponse(
       res,
       404,
-      "please provide restaraunt id to approve it",
+      "please provide restaurant id to approve it",
     );
   }
   const item = await findMenuItemById(ItemId);
   if (item) {
-    item.isAvailable = true;
+    item.isAvailable = !item.isAvailable;
     await item.save();
   }
-  return response(res, 200, "Available", []);
+  return response(res, 200, "Toggled", []);
 });
-
-
-export const isNotAvaliable = catchAsync(
-  async (req: Request, res: Response) => {
-   const ItemId = req.params.id;
-  if (!ItemId) {
-    return errorResponse(
-      res,
-      404,
-      "please provide restaraunt id to approve it",
-    );
-  }
-  const item = await findMenuItemById(ItemId);
-  if (item) {
-    item.isAvailable = false;
-    await item.save();
-  }
-  return response(res, 200, "Unavailable", []);
-}
-);
