@@ -12,7 +12,6 @@ export interface ICart {
   restaurant : Types.ObjectId;
   items: ICartItem[];
 }
-
 const cartItemSchema = new Schema<ICartItem>(
   {
     menuItem: {

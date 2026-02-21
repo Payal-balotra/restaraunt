@@ -24,7 +24,7 @@ export const findrestaurantByname = (name: string) => {
   const existingrestaurant = Restaurant.findOne({ name });
   return existingrestaurant;
 };
-export const findrestaurantById = (id: any) => {
+export const findRestaurantById = (id: any) => {
   const existingrestaurant = Restaurant.findById(id);
   return existingrestaurant;
 };

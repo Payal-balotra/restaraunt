@@ -39,7 +39,7 @@ const orderSchema = new mongoose.Schema<IOrder>({
   },
   items: [
     {
-      productId: { type: Types.ObjectId, ref: "Menu" },
+      itemId: { type: Types.ObjectId, ref: "Menu" },
       name: String,
       quantity: Number,
       price: Number,

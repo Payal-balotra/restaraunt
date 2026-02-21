@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   create,
   deleterestaurantById,
-  findrestaurantById,
+  findRestaurantById,
   findrestaurantByname,
   updaterestaurantById,
 } from "../services/restaurant.services";
@@ -35,7 +35,7 @@ export const updaterestaurant = catchAsync(
   async (req: Request, res: Response) => {
     const restaurantId = req.params.id;
     const data = req.body;
-    const restaurant = await findrestaurantById(restaurantId);
+    const restaurant = await findRestaurantById(restaurantId);
     if (!restaurant) {
       return errorResponse(res, 404, "No restaurant found");
     }
@@ -52,7 +52,7 @@ export const updaterestaurant = catchAsync(
 export const deleterestaurant = catchAsync(
   async (req: Request, res: Response) => {
     const restaurantId = req.params.id;
-    const restaurant = await findrestaurantById(restaurantId);
+    const restaurant = await findRestaurantById(restaurantId);
     if (!restaurant) {
       return errorResponse(res, 404, "No restaurant found");
     }
@@ -70,7 +70,7 @@ export const approval = catchAsync(async (req: Request, res: Response) => {
       "please provide restaurant id to approve it",
     );
   }
-  const restaruant = await findrestaurantById(restaurantId);
+  const restaruant = await findRestaurantById(restaurantId);
   if (restaruant) {
     restaruant.isActive = true;
     await restaruant.save();
@@ -84,7 +84,7 @@ export const getRestaurants = async (req: Request, res: Response) => {
   const offset = (page - 1) * limit;
   const { search, cuisine } = req.query;
 
-  const filter: Record<string, any> = {};
+  const filter: Record<string, unknown> = {};
 
   if (typeof search === "string" && search.trim() !== "") {
     const searchRegex = new RegExp(search, "i");
