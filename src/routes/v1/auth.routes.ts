@@ -6,7 +6,7 @@ import {
   updateUser,
 } from "../../controllers/user.controller";
 import { validationMiddleware } from "../../validations/user.validation";
-import {  verifyToken } from "../../middlewares/auth.middleware";
+import { verifyToken } from "../../middlewares/auth.middleware";
 import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import { userIdCheck } from "../../middlewares/userCheckForUpdate.middleware";
 import { Role } from "../../models/user.model";
@@ -22,5 +22,5 @@ router.post(
   validationMiddleware,
   register,
 );
-router.post("/refresh-token",refreshToken);
+router.post("/refresh-token", refreshToken);
 export default router;

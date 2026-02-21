@@ -33,12 +33,6 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api", routes);
-app.use(function (err: { code: string; field: any; }, req: any, res: any, next: (arg0: any) => void) {
-  if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-    console.log('This is the invalid field ->', err.field);
-  }
-  next(err);
-});
 app.use(notFoundHandler);
 app.use(errorHandler);
 

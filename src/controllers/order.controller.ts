@@ -42,44 +42,72 @@ export const acceptOrder = async (req: any, res: Response) => {
   return response(res,200,"Order Accepted",order);
 
 };
-export const prepareOrder = async (req: Request, res: Response) => {
+export const prepareOrder = async (req: any, res: Response) => {
   const orderId = req.params.id;
   const order = await findOrderById(orderId);
   if (!order) {
     return errorResponse(res, 404, "Order not found");
+  }
+    const restaurant = await findRestaurantById(order.restaurant);
+  if(!restaurant){
+    return errorResponse(res,404,"Restaurant Not Found");
+  }
+  if(restaurant.owner.toString() !== req.user._id.toString()){
+    return errorResponse(res,403,"You are not authorized to accept this order")
   }
   order.status = STATUS.PREPARING;
   await order.save();
   return response(res,200,"Order preparing",order);
 
 };
-export const outForDelivery = async (req: Request, res: Response) => {
+export const outForDelivery = async (req: any, res: Response) => {
   const orderId = req.params.id;
   const order = await findOrderById(orderId);
   if (!order) {
     return errorResponse(res, 404, "Order not found");
+  }
+    const restaurant = await findRestaurantById(order.restaurant);
+  if(!restaurant){
+    return errorResponse(res,404,"Restaurant Not Found");
+  }
+  if(restaurant.owner.toString() !== req.user._id.toString()){
+    return errorResponse(res,403,"You are not authorized to accept this order")
   }
   order.status = STATUS.OUT_FOR_DELIVERY;
   await order.save();
   return response(res,200,"Order out for delivery",order);
 
 };
-export const completedOrder = async (req: Request, res: Response) => {
+export const completedOrder = async (req: any, res: Response) => {
   const orderId = req.params.id;
   const order = await findOrderById(orderId);
   if (!order) {
     return errorResponse(res, 404, "Order not found");
+  }
+    const restaurant = await findRestaurantById(order.restaurant);
+  if(!restaurant){
+    return errorResponse(res,404,"Restaurant Not Found");
+  }
+  if(restaurant.owner.toString() !== req.user._id.toString()){
+    return errorResponse(res,403,"You are not authorized to accept this order")
   }
   order.status = STATUS.COMPLETED;
   await order.save();
   return response(res,200,"Order Completed",order);
 
 };
-export const cancelOrder = async (req: Request, res: Response) => {
+export const cancelOrder = async (req: any, res: Response) => {
   const orderId = req.params.id;
   const order = await findOrderById(orderId);
   if (!order) {
     return errorResponse(res, 404, "Order not found");
+  }
+    const restaurant = await findRestaurantById(order.restaurant);
+  if(!restaurant){
+    return errorResponse(res,404,"Restaurant Not Found");
+  }
+  if(restaurant.owner.toString() !== req.user._id.toString()){
+    return errorResponse(res,403,"You are not authorized to accept this order")
   }
   order.status = STATUS.CANCELLED;
   await order.save();
