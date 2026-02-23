@@ -29,7 +29,7 @@ router.get("/get", getRestaurants);
 router.post(
   "/create",
   verifyToken,
-  allowRoles(Role.RESTAURANT_OWNER, Role.SUPER_ADMIN),
+  allowRoles(Role.RESTAURANT_OWNER),
   upload.array("images", 10),
   cloudinaryUploads,
   validateRestaurant,
@@ -39,7 +39,7 @@ router.post(
 router.put(
   "/update/:id",
   verifyToken,
-  allowRoles(Role.RESTAURANT_OWNER, Role.SUPER_ADMIN),
+  allowRoles(Role.RESTAURANT_OWNER),
   upload.array("images", 10),
   cloudinaryUploads,
   updaterestaurant,

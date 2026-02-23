@@ -33,7 +33,7 @@ export const createrestaurant = catchAsync(
 
 export const updaterestaurant = catchAsync(
   async (req: Request, res: Response) => {
-    const restaurantId = req.params.id;
+    const restaurantId = req.params.id as string;
     const data = req.body;
     const restaurant = await findRestaurantById(restaurantId);
     if (!restaurant) {
@@ -51,7 +51,7 @@ export const updaterestaurant = catchAsync(
 
 export const deleterestaurant = catchAsync(
   async (req: Request, res: Response) => {
-    const restaurantId = req.params.id;
+    const restaurantId = req.params.id as string;
     const restaurant = await findRestaurantById(restaurantId);
     if (!restaurant) {
       return errorResponse(res, 404, "No restaurant found");
@@ -62,7 +62,7 @@ export const deleterestaurant = catchAsync(
 );
 
 export const approval = catchAsync(async (req: Request, res: Response) => {
-  const restaurantId = req.params.id;
+  const restaurantId = req.params.id as string;
   if (!restaurantId) {
     return errorResponse(
       res,

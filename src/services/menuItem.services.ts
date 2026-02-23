@@ -26,21 +26,21 @@ export const findMenuItemInRes = async (
   itemId: string,
   restaurantId: string,
 ) => {
-
-return await Menu.findOne({
-  _id: itemId,
-  restaurant: restaurantId
-});
+  return await Menu.findOne({
+    _id: itemId,
+    restaurant: restaurantId,
+  });
 };
 
-export const updateMenuItemById = (id: any, data: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const updateMenuItemById = (id: string, data: any) => {
   const updatedMenuItem = Menu.findByIdAndUpdate(id, data, {
     returnDocument: "after",
   });
   return updatedMenuItem;
 };
 
-export const deleteMenuItemById = async (id: any) => {
+export const deleteMenuItemById = async (id: string) => {
   const deletedItem = Menu.findByIdAndDelete(id);
   return deletedItem;
 };

@@ -24,8 +24,10 @@ export const findUserByName = async (name: string) => {
   return existingUser;
 };
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateUserById = async (userId: string, data: any) => {
-  const updatedUser = User.findByIdAndUpdate(userId, data, { returnDocument: 'after' });
+  const updatedUser = User.findByIdAndUpdate(userId, data, {
+    returnDocument: "after",
+  });
   return updatedUser;
 };

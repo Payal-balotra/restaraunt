@@ -11,7 +11,9 @@ const objectIdSchema = z
 
 export const cartItemZodSchema = z.object({
   menuItem: objectIdSchema,
-  quantity: z.number("Please provide valid cart quantity ").min(1 , "Cart item can't be less than 1"),
+  quantity: z
+    .number("Please provide valid cart quantity ")
+    .min(1, "Cart item can't be less than 1"),
 });
 
 export const cartZodSchema = z.object({
@@ -26,14 +28,13 @@ export const validateCartItems = async (
   next: NextFunction,
 ) => {
   try {
-
-    const parsedData = cartZodSchema.parse( req.body );
+    const parsedData = cartZodSchema.parse(req.body);
     req.body = parsedData;
-    
+
     next();
   } catch (err) {
     if (err instanceof ZodError) {
-    console.log(err);
+      console.log(err);
 
       const errors: Record<string, string> = {};
 
@@ -42,8 +43,8 @@ export const validateCartItems = async (
         errors[path] = issue.message;
       });
 
-      return response(res,400,"Validation failed",errors);
+      return response(res, 400, "Validation failed", errors);
     }
-    return errorResponse(res,500,"Internal Server Error")
+    return errorResponse(res, 500, "Internal Server Error");
   }
 };

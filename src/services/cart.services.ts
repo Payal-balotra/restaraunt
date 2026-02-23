@@ -5,13 +5,20 @@ export const findCartById = async (userId: string) => {
   return await Cart.findById(userId);
 };
 
+export const findCartByUserId = async (userId: string) => {
+  return await Cart.findOne({ user: userId });
+};
+
 export const addItemToCart = async (
   userId: string,
   restaurantId: string,
   menuItemId: string,
   quantity: number,
 ) => {
-  const cart = await findCartById(userId);
+  const cart = await findCartByUserId(userId);
+
+  console.log(cart, "cart");
+  console.log(userId, "userId");
 
   if (!cart) {
     return await Cart.create({

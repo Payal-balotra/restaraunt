@@ -2,15 +2,12 @@ import mongoose from "mongoose";
 import { Order, STATUS, PAYMENT_STATUS } from "../models/order.model";
 import { Menu } from "../models/menu.model";
 
-export const placeOrderService = async ({
-  user,
-  restaurant,
-  items,
-}: {
-  user: string;
-  restaurant: string;
-  items: { itemId: string; quantity: number }[];
-}) => {
+export const placeOrderService = async (
+  userId: string,
+  restaurantId: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  items: any,
+) => {
   if (!items || items.length === 0) {
     throw new Error("No items to place order");
   }
@@ -23,9 +20,8 @@ export const placeOrderService = async ({
   }[] = [];
 
   let totalAmount = 0;
-
   for (const item of items) {
-    const menuItem = await Menu.findById(item.itemId);
+    const menuItem = await Menu.findById(item.menuItem.toString());
     if (!menuItem) {
       throw new Error(`Menu item not found: ${item.itemId}`);
     }
@@ -43,18 +39,17 @@ export const placeOrderService = async ({
   }
 
   const order = await Order.create({
-    user,
-    restaurant,
+    user: userId,
+    restaurant: restaurantId,
     items: orderItems,
     totalAmount,
     status: STATUS.PLACED,
     paymentStatus: PAYMENT_STATUS.PENDING,
   });
 
-
   return order;
 };
 
-export const findOrderById = async(orderId: any) =>{
-    return await Order.findById(orderId);
-}
+export const findOrderById = async (orderId: string) => {
+  return await Order.findById(orderId);
+};

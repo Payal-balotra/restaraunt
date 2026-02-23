@@ -5,7 +5,8 @@ import { findRestaurantById } from "../services/restaurant.services";
 import { findMenuItemInRes } from "../services/menuItem.services";
 
 export const addToCart = async (req: Request, res: Response) => {
-  const { user, restaurant, items } = req.body;
+  const user = req.user._id;
+  const { restaurant, items } = req.body;
   const restaurantRes = await findRestaurantById(restaurant);
   if (!restaurantRes) {
     return errorResponse(res, 404, "Restaurant not found");

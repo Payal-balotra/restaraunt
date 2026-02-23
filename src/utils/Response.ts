@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
 export const response = (
   res: Response,
   statusCode: number,
   message: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any,
 ) => {
   return res.status(statusCode).json({

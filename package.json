@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "type": "module",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +23,15 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-config-xo": "^0.50.0",
     "globals": "^17.3.0",
+    "i": "^0.3.7",
     "jiti": "^2.6.1",
+    "nodemon": "^3.1.14",
+    "npm": "^11.10.1",
     "prettier": "3.8.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.0"
+    "typescript-eslint": "^8.56.0",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "@types/express": "^5.0.6",
@@ -35,11 +41,17 @@
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "helmet": "^8.1.0",
+    "husky": "^9.1.7",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.1",
     "multer": "^2.0.2",
-    "nodemon": "^3.1.11",
-    "ts-node": "^10.9.2",
     "zod": "^4.3.6"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add ."
+    ]
   }
 }

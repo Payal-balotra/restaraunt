@@ -43,15 +43,16 @@ export const login = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json({ accessToken, refreshToken });
 });
 
-export const updateUser = catchAsync(async (req: any, res: Response) => {
+export const updateUser = catchAsync(async (req: Request, res: Response) => {
   const data = req.body;
-  const userId = req.params.id;
+  const userId = req.params.id as string;
   const updatedUser = await updateUserById(userId, data);
   return response(res, 200, "User Updated Successfully", updatedUser);
-})
+});
 
-export const refreshToken = (req: any, res: Response) => {
-  const token = req.header("Authorization");
+export const refreshToken = (req: Request, res: Response) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     return errorResponse(
       res,
@@ -65,5 +66,5 @@ export const refreshToken = (req: any, res: Response) => {
     return errorResponse(res, 401, "Invalid Refersh Token");
   }
   const accessToken = generateAccessToken({ user });
-  return response(res, 200, "Refresh Token", accessToken);
+  return response(res, 200, "Access Token", accessToken);
 };

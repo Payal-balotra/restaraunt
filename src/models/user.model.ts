@@ -7,15 +7,15 @@ export enum Role {
   SUPER_ADMIN = "super_admin",
 }
 
-export type User = {
+export interface IUser {
   name: string;
-  emial: string;
+  email: string;
   password: string;
   role: Role;
   phone: number;
-};
+}
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
@@ -39,9 +39,10 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: Number,
+      required: true,
     },
   },
   { timestamps: true },
 );
 
-export const User = mongoose.model("User", userSchema);
+export const User = mongoose.model<IUser>("User", userSchema);
