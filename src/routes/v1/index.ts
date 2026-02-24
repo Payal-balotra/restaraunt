@@ -5,6 +5,7 @@ import menuItemsRoutes from "./menu.routes";
 import cartRoutes from "./cart.routes";
 import orderRoutes from "./order.routes";
 import reservationRoutes from "./reservation.routes";
+// import reviewRoutes from "./review.routes"
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use("/menu-items", menuItemsRoutes);
 router.use("/cart", cartRoutes);
 router.use("/order", orderRoutes);
 router.use("/reservation", reservationRoutes);
+// router.use("/review",reviewRoutes);
 
 export default router;

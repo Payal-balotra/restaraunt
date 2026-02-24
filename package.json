@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "type": "module",
     "dev": "nodemon src/server.ts",
-    "prepare": "husky install"
+    "prepare": "husky install",
+      "build": "tsc"
   },
   "keywords": [],
   "author": "",

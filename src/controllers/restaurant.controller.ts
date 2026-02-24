@@ -12,7 +12,8 @@ import { Restaurant } from "../models/restaurant.model";
 
 export const createrestaurant = catchAsync(
   async (req: Request, res: Response) => {
-    const { name, description, cuisine, images, owner, address } = req.body;
+    const { name, description, cuisine, images, owner, address, capacity } =
+      req.body;
 
     const existingRes = await findrestaurantByname(name);
     if (existingRes) {
@@ -25,9 +26,10 @@ export const createrestaurant = catchAsync(
       images,
       owner,
       address,
+      capacity,
     );
 
-    return response(res, 201, "User created successfully", restaurant);
+    return response(res, 201, "Resturant created successfully", restaurant);
   },
 );
 

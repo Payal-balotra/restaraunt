@@ -7,6 +7,7 @@ export const create = async (
   images: string[],
   owner: string,
   address: string,
+  capacity: number,
 ) => {
   const restaurant = Restaurant.create({
     name,
@@ -15,8 +16,8 @@ export const create = async (
     images,
     owner,
     address,
+    capacity,
   });
-  console.log("restaurant created");
   return restaurant;
 };
 
@@ -40,4 +41,13 @@ export const updaterestaurantById = (id: string, data: any) => {
 export const deleterestaurantById = async (id: string) => {
   const deletedRes = Restaurant.findByIdAndDelete(id);
   return deletedRes;
+};
+
+export const updateCapacity = async (id: string, num: number) => {
+  const restaurant = await findRestaurantById(id);
+  if (restaurant) {
+    restaurant.capacity += num;
+    await restaurant.save();
+  }
+  return true;
 };

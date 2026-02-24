@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 //   owner : Types.ObjectId,
 //   address : string,
 //   isActive : boolean
-  
+
 // }
 const restaurantSchema = new mongoose.Schema({
   name: {
@@ -37,7 +37,11 @@ const restaurantSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: false,
-     select: false,
+    select: false,
+  },
+  capacity: {
+    type: Number,
+    default: 15,
   },
 });
 

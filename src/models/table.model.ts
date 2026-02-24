@@ -19,18 +19,14 @@ const reservationSchema = new mongoose.Schema(
       ref: "Restaurant",
       required: true,
     },
-
-    date: {
+    startTime: {
       type: Date,
       required: true,
     },
-
-    time: {
-      type: String,
+    endTime: {
+      type: Date,
       required: true,
-      trim: true,
     },
-
     guests: {
       type: Number,
       required: true,
@@ -47,5 +43,4 @@ const reservationSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
-module.exports = mongoose.model("Reservation", reservationSchema);
+export const Reservation = mongoose.model("Reservation", reservationSchema);

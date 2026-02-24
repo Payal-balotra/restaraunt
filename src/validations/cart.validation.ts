@@ -17,7 +17,6 @@ export const cartItemZodSchema = z.object({
 });
 
 export const cartZodSchema = z.object({
-  user: objectIdSchema,
   restaurant: objectIdSchema,
   items: z.array(cartItemZodSchema),
 });

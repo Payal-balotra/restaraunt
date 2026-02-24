@@ -1,21 +1,16 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config/config";
+import { Role } from "../models/user.model";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const generateAccessToken = (user: any) => {
-  const token = jwt.sign(
-    { userId: user._id, role: user.role },
-    config.secretKey,
-    {
-      expiresIn: "1h",
-    },
-  );
+export const generateAccessToken = (userId: string, role: Role) => {
+  const token = jwt.sign({ userId, role }, config.secretKey, {
+    expiresIn: "1h",
+  });
   return token;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const generateRefreshToken = (user: any) => {
-  return jwt.sign({ userId: user._id, role: user.role }, config.refreshToken, {
+export const generateRefreshToken = (userId: string, role: Role) => {
+  return jwt.sign({ userId, role }, config.refreshToken, {
     expiresIn: "7d",
   });
 };

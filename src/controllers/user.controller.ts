@@ -37,8 +37,8 @@ export const login = catchAsync(async (req: Request, res: Response) => {
     return errorResponse(res, 401, "Authentication failed");
   }
 
-  const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user);
+  const accessToken = generateAccessToken(user.id, user.role);
+  const refreshToken = generateRefreshToken(user.id, user.role);
 
   res.status(200).json({ accessToken, refreshToken });
 });
@@ -65,6 +65,6 @@ export const refreshToken = (req: Request, res: Response) => {
   if (!user) {
     return errorResponse(res, 401, "Invalid Refersh Token");
   }
-  const accessToken = generateAccessToken({ user });
+  const accessToken = generateAccessToken(user.userId, user.role);
   return response(res, 200, "Access Token", accessToken);
 };

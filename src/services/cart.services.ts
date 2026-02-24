@@ -16,10 +16,6 @@ export const addItemToCart = async (
   quantity: number,
 ) => {
   const cart = await findCartByUserId(userId);
-
-  console.log(cart, "cart");
-  console.log(userId, "userId");
-
   if (!cart) {
     return await Cart.create({
       user: userId,
