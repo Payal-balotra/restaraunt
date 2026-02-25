@@ -5,7 +5,7 @@ import { findRestaurantById } from "../services/restaurant.services";
 import { findMenuItemInRes } from "../services/menuItem.services";
 
 export const addToCart = async (req: Request, res: Response) => {
-  const user = req.user._id;
+  const user = req.user._id.toString();
   const { restaurant, items } = req.body;
   const restaurantRes = await findRestaurantById(restaurant);
   if (!restaurantRes) {

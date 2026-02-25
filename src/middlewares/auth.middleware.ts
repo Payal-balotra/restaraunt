@@ -15,6 +15,7 @@ export const verifyToken = async (
     const decoded = verifyJwtToken(token);
     const user = await findUserById(decoded.userId);
     if (!user) return errorResponse(res, 401, "user not found");
+    if (!user.isActive) return errorResponse(res, 401, "Admin Blocks the user");
     req.user = user;
     next();
   } catch (error) {

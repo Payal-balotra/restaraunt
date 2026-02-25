@@ -1,3 +1,4 @@
+import { Menu } from "../models/menu.model";
 import { Restaurant } from "../models/restaurant.model";
 
 export const create = async (
@@ -49,5 +50,15 @@ export const updateCapacity = async (id: string, num: number) => {
     restaurant.capacity += num;
     await restaurant.save();
   }
-  return true;
+  return restaurant;
+};
+
+export const findItems = (restaurant: string) => {
+  const items = Menu.find({ restaurant });
+
+  return items;
+};
+export const findCountOfItems = (restaurant: string) => {
+  const totalCount = Menu.countDocuments({ restaurant });
+  return totalCount;
 };

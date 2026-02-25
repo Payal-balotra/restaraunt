@@ -6,7 +6,7 @@ import { STATUS } from "../models/order.model";
 import { findCartByUserId } from "../services/cart.services";
 
 export const placeOrder = async (req: Request, res: Response) => {
-  const userId = req.user?._id;
+  const userId = req.user?._id.toString();
 
   const cart = await findCartByUserId(userId);
   if (!cart) {

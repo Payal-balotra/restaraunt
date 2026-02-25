@@ -15,7 +15,7 @@ export const findUserByEmail = async (email: string) => {
   const existingUser = User.findOne({ email });
   return existingUser;
 };
-export const findUserById = async (id: number) => {
+export const findUserById = async (id: string) => {
   const existingUser = User.findById(id);
   return existingUser;
 };

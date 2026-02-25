@@ -13,6 +13,7 @@ export interface IUser {
   password: string;
   role: Role;
   phone: number;
+  isActive: boolean;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -40,6 +41,10 @@ const userSchema = new mongoose.Schema<IUser>(
     phone: {
       type: Number,
       required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true },
