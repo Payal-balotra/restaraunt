@@ -15,13 +15,14 @@ const createSuperAdmin = async () => {
 
   const superAdmin = await User.create({
     name: "Payal",
-    email: "payal@gmail.com",
+    email: "payalackerman@gmail.com",
     password: hashedPassword,
     role: "super_admin",
     phone: 9213487342,
+    isActive : true
   });
 
   console.log("Super Admin created", superAdmin);
 };
 
-// createSuperAdmin();
+createSuperAdmin();
