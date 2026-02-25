@@ -86,8 +86,9 @@ export const getRestaurants = async (req: Request, res: Response) => {
   const offset = (page - 1) * limit;
   const { search, cuisine } = req.query;
 
-  const filter: Record<string, unknown> = {};
-
+  const filter: Record<string, unknown> = {
+    isActive: true,
+  };
   if (typeof search === "string" && search.trim() !== "") {
     const searchRegex = new RegExp(search, "i");
     filter.$or = [

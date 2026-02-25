@@ -14,6 +14,9 @@ export const placeOrder = async (req: Request, res: Response) => {
   }
   const restaurantId = cart.restaurant.toString();
   const restaurantRes = await findRestaurantById(restaurantId);
+  if (!restaurantRes?.isActive) {
+    return errorResponse(res, 503, "Restaraunt is not approved by admin yet");
+  }
   if (!restaurantRes) {
     return errorResponse(res, 404, "Restaurant not found");
   }

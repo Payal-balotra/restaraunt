@@ -8,6 +8,9 @@ export const addToCart = async (req: Request, res: Response) => {
   const user = req.user._id.toString();
   const { restaurant, items } = req.body;
   const restaurantRes = await findRestaurantById(restaurant);
+  if (!restaurantRes?.isActive) {
+    return errorResponse(res, 503, "Restaraunt is not approved by admin yet");
+  }
   if (!restaurantRes) {
     return errorResponse(res, 404, "Restaurant not found");
   }
