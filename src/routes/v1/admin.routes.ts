@@ -4,11 +4,13 @@ import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import { Role } from "../../models/user.model";
 import {
   capacity,
-  customers,
   inActiveUser,
   itemsPerRestaurant,
-  owners,
+  orders,
+  rating,
+  reservation,
   totalRestaurant,
+  users,
 } from "../../controllers/admin.controller";
 const router = Router();
 
@@ -31,13 +33,10 @@ router.get(
   itemsPerRestaurant,
 );
 // router.get("/reservations",verifyToken,allowRoles(Role.ADMIN))
-router.get("/customers", verifyToken, allowRoles(Role.ADMIN), customers);
-router.get("/owners", verifyToken, allowRoles(Role.ADMIN), owners);
+router.get("/users", verifyToken, allowRoles(Role.ADMIN), users);
 router.get("/capacity", verifyToken, allowRoles(Role.ADMIN), capacity);
-router.get(
-  "/users-orders-per-restaurant/:id",
-  verifyToken,
-  allowRoles(Role.ADMIN),
-);
+router.get("/orders", verifyToken, allowRoles(Role.ADMIN), orders);
+router.get("/reservations", verifyToken, allowRoles(Role.ADMIN), reservation);
+router.get("/averageRating", verifyToken, allowRoles(Role.ADMIN), rating);
 
 export default router;

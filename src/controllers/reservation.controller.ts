@@ -10,8 +10,9 @@ import {
   isTableAvailable,
 } from "../services/tableReservation.services";
 import { TABLE_STATUS } from "../models/table.model";
+import catchAsync from "../utils/catchAsync";
 
-export const reservation = async (req: Request, res: Response) => {
+export const reservation = catchAsync(async (req: Request, res: Response) => {
   const user = req.user._id.toString();
   const { restaurant, date, time, guests } = req.body;
 
@@ -19,11 +20,11 @@ export const reservation = async (req: Request, res: Response) => {
   const startTime = new Date(date1);
 
   const restaurantRes = await findRestaurantById(restaurant);
-  if (!restaurantRes?.isActive) {
-    return errorResponse(res, 503, "Restaraunt is not approved by admin yet");
-  }
   if (!restaurantRes) {
     return errorResponse(res, 404, "Restaurant Not Found!");
+  }
+  if (!restaurantRes?.isActive) {
+    return errorResponse(res, 503, "Restaraunt is not approved by admin yet");
   }
   if (restaurantRes.capacity < guests) {
     return errorResponse(res, 503, "Sorry we dont have capacity now");
@@ -55,55 +56,61 @@ export const reservation = async (req: Request, res: Response) => {
     return errorResponse(res, 404, "Error In Table Reservation");
   }
   return response(res, 200, "Table Reserved", table);
-};
-export const confirmReservation = async (req: Request, res: Response) => {
-  const reservationId = req.params.id as string;
-  if (!reservationId) {
-    return errorResponse(
-      res,
-      404,
-      "please provide reservation id to approve it",
-    );
-  }
-  const table = await findReservationById(reservationId);
-  if (table) {
-    table.status = TABLE_STATUS.CONFIRMED;
-    await table.save();
-  }
-  return response(res, 200, "Reservation Confirmed", []);
-};
-export const cancelReservation = async (req: Request, res: Response) => {
-  const reservationId = req.params.id as string;
-  if (!reservationId) {
-    return errorResponse(
-      res,
-      404,
-      "please provide reservation id to approve it",
-    );
-  }
-  const table = await findReservationById(reservationId);
-  if (table) {
-    table.status = TABLE_STATUS.CANCELLED;
-    await table.save();
-  }
-  return response(res, 200, "Reservation Cancelled", []);
-};
-export const completedReservation = async (req: Request, res: Response) => {
-  const reservationId = req.params.id as string;
-  if (!reservationId) {
-    return errorResponse(
-      res,
-      404,
-      "please provide reservation id to approve it",
-    );
-  }
-  const table = await findReservationById(reservationId);
+});
+export const confirmReservation = catchAsync(
+  async (req: Request, res: Response) => {
+    const reservationId = req.params.id as string;
+    if (!reservationId) {
+      return errorResponse(
+        res,
+        404,
+        "please provide reservation id to approve it",
+      );
+    }
+    const table = await findReservationById(reservationId);
+    if (table) {
+      table.status = TABLE_STATUS.CONFIRMED;
+      await table.save();
+    }
+    return response(res, 200, "Reservation Confirmed", []);
+  },
+);
+export const cancelReservation = catchAsync(
+  async (req: Request, res: Response) => {
+    const reservationId = req.params.id as string;
+    if (!reservationId) {
+      return errorResponse(
+        res,
+        404,
+        "please provide reservation id to approve it",
+      );
+    }
+    const table = await findReservationById(reservationId);
+    if (table) {
+      table.status = TABLE_STATUS.CANCELLED;
+      await table.save();
+    }
+    return response(res, 200, "Reservation Cancelled", []);
+  },
+);
+export const completedReservation = catchAsync(
+  async (req: Request, res: Response) => {
+    const reservationId = req.params.id as string;
+    if (!reservationId) {
+      return errorResponse(
+        res,
+        404,
+        "please provide reservation id to approve it",
+      );
+    }
+    const table = await findReservationById(reservationId);
 
-  if (table) {
-    table.status = TABLE_STATUS.COMPLETED;
-    await table.save();
-    const rest = updateCapacity(table.restaurant.toString(), table.guests);
-    console.log(rest);
-  }
-  return response(res, 200, "Reservation Completed", []);
-};
+    if (table) {
+      table.status = TABLE_STATUS.COMPLETED;
+      await table.save();
+      const rest = updateCapacity(table.restaurant.toString(), table.guests);
+      console.log(rest);
+    }
+    return response(res, 200, "Reservation Completed", []);
+  },
+);

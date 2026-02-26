@@ -9,7 +9,10 @@ import {
 } from "../../controllers/menu.controller";
 import multer from "multer";
 import { cloudinaryUpload } from "../../middlewares/cloudinary.middleware";
-import { validateMenuItems } from "../../validations/menu.validation";
+import {
+  updateValidateMenuItems,
+  validateMenuItems,
+} from "../../validations/menu.validation";
 import { deleterestaurant } from "../../controllers/restaurant.controller";
 
 const router = express.Router();
@@ -41,6 +44,7 @@ router.put(
   allowRoles(Role.RESTAURANT_OWNER),
   upload.single("image"),
   cloudinaryUpload,
+  updateValidateMenuItems,
   updateMenuItems,
 );
 

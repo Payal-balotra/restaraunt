@@ -37,7 +37,6 @@ const restaurantSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: false,
-    select: false,
   },
   capacity: {
     type: Number,

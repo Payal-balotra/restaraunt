@@ -6,8 +6,9 @@ import {
   createReview,
   findReview,
 } from "../services/review.services";
+import catchAsync from "../utils/catchAsync";
 
-export const review = async (req: Request, res: Response) => {
+export const review = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?._id.toString();
   const { restaurant, rating, comment } = req.body;
   const restaurantRes = await findRestaurantById(restaurant);
@@ -27,10 +28,12 @@ export const review = async (req: Request, res: Response) => {
     return errorResponse(res, 500, "Can't craete review");
   }
   return response(res, 200, "Review created", createdReview);
-};
+});
 
-export const averageRatings = async (req: Request, res: Response) => {
-  const restaurant = req.params.id as string;
-  const average = await averageRating(restaurant);
-  return response(res, 200, "Average Rating", Math.round(average));
-};
+export const averageRatings = catchAsync(
+  async (req: Request, res: Response) => {
+    const restaurant = req.params.id as string;
+    const average = await averageRating(restaurant);
+    return response(res, 200, "Average Rating", Math.round(average));
+  },
+);

@@ -13,7 +13,8 @@ export const restaurantSchema = z.object({
     .trim()
     .min(10, "Description should be a bit more detailed (min 10 chars)"),
 
-  cuisine: z.string({message : "Please provide cuisine"})
+  cuisine: z
+    .string({ message: "Please provide cuisine" })
     .nonempty("At least one cuisine type is required"),
 
   images: z
@@ -34,7 +35,31 @@ export const validateRestaurant = async (
   next: NextFunction,
 ) => {
   try {
-    const parsedData = restaurantSchema.parse(req.body );;
+    const parsedData = restaurantSchema.parse(req.body);
+    req.body = parsedData;
+    next();
+  } catch (err) {
+    if (err instanceof ZodError) {
+      const errors: Record<string, string> = {};
+
+      err.issues.forEach((issue) => {
+        const path = issue.path.join(".");
+        errors[path] = issue.message;
+      });
+
+      return response(res, 400, "Validation failed", errors);
+    }
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const UpdateValidateRestaurant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const parsedData = restaurantSchema.partial(req.body);
     req.body = parsedData;
     next();
   } catch (err) {

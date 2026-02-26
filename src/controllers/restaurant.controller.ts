@@ -80,46 +80,48 @@ export const approval = catchAsync(async (req: Request, res: Response) => {
   return response(res, 200, "approval", []);
 });
 
-export const getRestaurants = async (req: Request, res: Response) => {
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 10;
-  const offset = (page - 1) * limit;
-  const { search, cuisine } = req.query;
+export const getRestaurants = catchAsync(
+  async (req: Request, res: Response) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset = (page - 1) * limit;
+    const { search, cuisine } = req.query;
 
-  const filter: Record<string, unknown> = {
-    isActive: true,
-  };
-  if (typeof search === "string" && search.trim() !== "") {
-    const searchRegex = new RegExp(search, "i");
-    filter.$or = [
-      { name: searchRegex },
-      { description: searchRegex },
-      { cuisine: searchRegex },
-    ];
-  }
+    const filter: Record<string, unknown> = {
+      isActive: true,
+    };
+    if (typeof search === "string" && search.trim() !== "") {
+      const searchRegex = new RegExp(search, "i");
+      filter.$or = [
+        { name: searchRegex },
+        { description: searchRegex },
+        { cuisine: searchRegex },
+      ];
+    }
 
-  if (typeof cuisine === "string" && cuisine.trim() !== "") {
-    filter.cuisine = { $regex: cuisine, $options: "i" };
-  }
+    if (typeof cuisine === "string" && cuisine.trim() !== "") {
+      filter.cuisine = { $regex: cuisine, $options: "i" };
+    }
 
-  const [data, totalCount] = await Promise.all([
-    Restaurant.find(filter).skip(offset).limit(limit),
-    Restaurant.countDocuments(filter),
-  ]);
+    const [data, totalCount] = await Promise.all([
+      Restaurant.find(filter).skip(offset).limit(limit),
+      Restaurant.countDocuments(filter),
+    ]);
 
-  const totalPages = Math.ceil(totalCount / limit);
-  const pagesLeft = totalPages > page ? totalPages - page : 0;
+    const totalPages = Math.ceil(totalCount / limit);
+    const pagesLeft = totalPages > page ? totalPages - page : 0;
 
-  return response(res, 200, "Restaurants", {
-    data,
-    pagination: {
-      totalItems: totalCount,
-      totalPages,
-      currentPage: page,
-      limit,
-      pagesLeft,
-      hasNextPage: page < totalPages,
-      hasPreviousPage: page > 1,
-    },
-  });
-};
+    return response(res, 200, "Restaurants", {
+      data,
+      pagination: {
+        totalItems: totalCount,
+        totalPages,
+        currentPage: page,
+        limit,
+        pagesLeft,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    });
+  },
+);

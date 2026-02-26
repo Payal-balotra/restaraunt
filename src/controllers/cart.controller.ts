@@ -3,8 +3,9 @@ import { errorResponse, response } from "../utils/Response";
 import { addItemToCart } from "../services/cart.services";
 import { findRestaurantById } from "../services/restaurant.services";
 import { findMenuItemInRes } from "../services/menuItem.services";
+import catchAsync from "../utils/catchAsync";
 
-export const addToCart = async (req: Request, res: Response) => {
+export const addToCart = catchAsync(async (req: Request, res: Response) => {
   const user = req.user._id.toString();
   const { restaurant, items } = req.body;
   const restaurantRes = await findRestaurantById(restaurant);
@@ -30,4 +31,4 @@ export const addToCart = async (req: Request, res: Response) => {
   );
 
   return response(res, 200, "add to cart ", cartItem);
-};
+});

@@ -2,18 +2,41 @@ import { z, ZodError } from "zod";
 import { STATUS, PAYMENT_STATUS } from "../models/order.model";
 import { NextFunction, Request, Response } from "express";
 import { errorResponse, response } from "../utils/Response";
-
+import { Types } from "mongoose";
 
 const orderItemSchema = z.object({
-  itemId: z.string().min(1, "Invalid ObjectId"),
+  itemId: z.string().refine(
+    (val) => {
+      return Types.ObjectId.isValid(val);
+    },
+    {
+      message: "Invalid ObjectId",
+    },
+  ),
   quantity: z.number().min(1, "Quantity must be at least 1"),
   price: z.number().min(0, "Price must be positive"),
 });
 
 export const createOrderSchema = z.object({
-  user: z.string().min(1, "Invalid ObjectId"),
-  restaurant: z.string().min(1, "Invalid ObjectId"),
-  items: z.array(orderItemSchema).min(1, "Order must contain at least one item"),
+  user: z.string().refine(
+    (val) => {
+      return Types.ObjectId.isValid(val);
+    },
+    {
+      message: "Invalid ObjectId",
+    },
+  ),
+  restaurant: z.string().refine(
+    (val) => {
+      return Types.ObjectId.isValid(val);
+    },
+    {
+      message: "Invalid ObjectId",
+    },
+  ),
+  items: z
+    .array(orderItemSchema)
+    .min(1, "Order must contain at least one item"),
 
   totalAmount: z.number().optional(),
   status: z.enum(STATUS).optional(),
@@ -24,7 +47,7 @@ export const createOrderSchema = z.object({
 export const validateOrder = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const parsedData = createOrderSchema.parse(req.body);
@@ -38,8 +61,7 @@ export const validateOrder = async (
         const path = issue.path.join(".");
         errors[path] = `Invalid input: ${issue.message}`;
       });
-      return response(res,400,"Validation Failed",errors)
-
+      return response(res, 400, "Validation Failed", errors);
     }
 
     return errorResponse(res, 500, "Internal Server Error");

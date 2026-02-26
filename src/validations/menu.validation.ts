@@ -54,3 +54,30 @@ export const validateMenuItems = async (
     return errorResponse(res, 500, "Internal Server Error");
   }
 };
+
+export const updateValidateMenuItems = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const parsedData = menuItemSchema.partial(req.body);
+    req.body = parsedData;
+
+    next();
+  } catch (err) {
+    if (err instanceof ZodError) {
+      console.log(err);
+
+      const errors: Record<string, string> = {};
+
+      err.issues.forEach((issue) => {
+        const path = issue.path.join(".");
+        errors[path] = issue.message;
+      });
+
+      return response(res, 400, "Validation failed", errors);
+    }
+    return errorResponse(res, 500, "Internal Server Error");
+  }
+};

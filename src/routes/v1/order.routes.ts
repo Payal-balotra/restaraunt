@@ -1,23 +1,23 @@
 import express from "express";
 import { verifyToken } from "../../middlewares/auth.middleware";
 import {
-  acceptOrder,
   cancelOrder,
   completedOrder,
   outForDelivery,
   placeOrder,
   prepareOrder,
 } from "../../controllers/order.controller";
-// import { validateOrder } from "../../validations/order.validation";
 import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import { Role } from "../../models/user.model";
+import { validateOrder } from "../../validations/order.validation";
 const router = express.Router();
+// import { validateOrder } from "../../validations/order.validation";
 router.post("/place-order", verifyToken, placeOrder);
 router.post(
   "/accept-order/:id",
   verifyToken,
   allowRoles(Role.RESTAURANT_OWNER),
-  acceptOrder,
+  validateOrder,
 );
 router.post(
   "/prepare-order/:id",

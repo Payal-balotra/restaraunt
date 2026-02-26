@@ -11,7 +11,10 @@ import {
 import { verifyToken } from "../../middlewares/auth.middleware";
 import { cloudinaryUploads } from "../../middlewares/cloudinary.middleware";
 import { Role } from "../../models/user.model";
-import { validateRestaurant } from "../../validations/restaurant.validation";
+import {
+  UpdateValidateRestaurant,
+  validateRestaurant,
+} from "../../validations/restaurant.validation";
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -42,6 +45,7 @@ router.put(
   allowRoles(Role.RESTAURANT_OWNER),
   upload.array("images", 10),
   cloudinaryUploads,
+  UpdateValidateRestaurant,
   updaterestaurant,
 );
 router.delete(

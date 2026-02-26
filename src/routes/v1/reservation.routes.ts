@@ -8,9 +8,10 @@ import {
 import { verifyToken } from "../../middlewares/auth.middleware";
 import { allowRoles } from "../../middlewares/roleCheck.middleware";
 import { Role } from "../../models/user.model";
+import { validateReservation } from "../../validations/reservation.validation";
 const router = express.Router();
 
-router.post("/request", verifyToken, reservation);
+router.post("/request", verifyToken, validateReservation, reservation);
 router.post(
   "/confirmed/:id",
   verifyToken,

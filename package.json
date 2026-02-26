@@ -7,7 +7,7 @@
     "type": "module",
     "dev": "nodemon src/server.ts",
     "prepare": "husky install",
-      "build": "tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-config-xo": "^0.50.0",
     "globals": "^17.3.0",
+    "husky": "^8.0.0",
     "i": "^0.3.7",
     "jiti": "^2.6.1",
     "nodemon": "^3.1.14",
@@ -31,8 +32,7 @@
     "prettier": "3.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.0",
-    "husky": "^8.0.0"
+    "typescript-eslint": "^8.56.0"
   },
   "dependencies": {
     "@types/express": "^5.0.6",
@@ -41,6 +41,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "husky": "^9.1.7",
     "jsonwebtoken": "^9.0.3",

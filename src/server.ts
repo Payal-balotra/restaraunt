@@ -2,6 +2,7 @@ import express from "express";
 import { connectDb } from "./database/db";
 import routes from "./routes/index";
 import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import cors from "cors";
 import { dbStatus } from "./database/db";
 import { config } from "./config/config";
@@ -11,6 +12,13 @@ import {
 } from "./middlewares/globalError.middleware";
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: "Too many requests from this IP, please try again after 15 minutes",
+});
+
+app.use(limiter);
 app.use(helmet());
 app.use(
   cors({
